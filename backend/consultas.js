@@ -2,8 +2,9 @@ const pool = require("./config/db");
 
 
 const getPosts = async () => {
-  const { rows } = await pool.query("SELECT * FROM posts");
-  console.log(rows);
+  const consulta = `SELECT * FROM posts`;
+  const { rows } = await pool.query(consulta);
+  
   return rows;
 };
 
