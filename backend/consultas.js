@@ -46,8 +46,10 @@ const validaPosts=async (id)=>{
   const value = [id];
   const { rows } = await pool.query(consulta,value);
   
+
   return rows;
 }
+ 
 
 module.exports = {
   getPosts,
