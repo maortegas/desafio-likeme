@@ -1,5 +1,10 @@
 const db = require("../config/db");
-const { updatePost, selectAllPosts, deletePost } = require("../querys");
+const {
+  updatePost,
+  selectAllPosts,
+  deletePost,
+  insertPost,
+} = require("../querys");
 
 const updatePostController = async (req, res, next) => {
   const { data } = req;
@@ -67,8 +72,22 @@ const deletePostController = async (req, res, next) => {
 };
 
 
+const insertPostController = async (req, res, next) => {
+   const { titulo, url, descripcion } = req.body;
+
+  try{
+    const value = [titulo, url, descripcion, 0];
+    const { rows } = await db.query(insertPost, value);
+    res.status(200).json(rows);
+
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   updatePostController,
   getPostController,
   deletePostController,
+  insertPostController,
 };

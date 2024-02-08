@@ -1,7 +1,7 @@
 const db = require("../config/db");
 const { verifyPostExist } = require("../querys");
 
-const updatePostMiddleware = async (req, res, next) => {
+const verifyPostExistMiddleware = async (req, res, next) => {
   const { id } = req.params;
   try {
     if (id) {
@@ -12,7 +12,7 @@ const updatePostMiddleware = async (req, res, next) => {
       if (!post) {
         return res.status(400).json({
           status: "Bad Request",
-          msg: "El ID no existe",
+          message: "El ID no existe",
         });
       } else {
         req.data = {
@@ -24,7 +24,7 @@ const updatePostMiddleware = async (req, res, next) => {
     } else {
       return res.status(400).json({
         status: "Bad Request",
-        msg: "El ID es requerido",
+        message: "El ID es requerido",
       });
     }
   } catch (error) {
@@ -32,39 +32,24 @@ const updatePostMiddleware = async (req, res, next) => {
   }
 };
 
-const deletePostMiddleware = async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    if (id) {
-      const values = [id];
-      const query_result = await db.query(verifyPostExist, values);
-      const post = query_result.rows[0];
+const insertPostMiddleware = async (req, res, next) => {
+  const { titulo, url, descripcion } = req.body;
 
-      if (!post) {
-        return res.status(400).json({
-          status: "Bad Request",
-          msg: "El ID no existe",
-        });
-      } else {
-        req.data = {
-          postExist: true,
-          post,
-        };
-        next();
-      }
-    } else {
+  try {
+    if (!titulo || !url || !descripcion) {
       return res.status(400).json({
         status: "Bad Request",
-        msg: "El ID es requerido",
+        message: "Debe ingresar los parametros",
       });
+    
     }
-  } catch (error) {
-    next(error);
+    next();
   }
+    catch (error){
+      next(error);
+    }
 };
-
-
 module.exports = {
-  updatePostMiddleware,
-  deletePostMiddleware,
+  verifyPostExistMiddleware,
+  insertPostMiddleware,
 };
