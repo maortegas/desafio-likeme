@@ -26,6 +26,7 @@ const updatePostController = async (req, res, next) => {
     }
   } catch (error) {
     next(error);
+  
   }
 };
 
@@ -37,7 +38,7 @@ const getPostController = async (req, res, next) => {
     if (rows.count==0){
         res.status(404).json({
           status: "Failed",
-          msg: "No existen datos",
+          msg: "No existen datos ",
          })
    
     }else{
